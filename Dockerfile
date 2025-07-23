@@ -1,24 +1,25 @@
-# Base image (OS)
-
+# Use an official Python runtime as the base image
 FROM python:3.9-slim
 
-# Working directory
-
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy src code to container
+# install required packages for system
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
+    && rm -rf /var/lib/apt/lists/*
 
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+# Install app dependencies
+RUN pip install mysqlclient
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
 COPY . .
 
-# Run the build commands
-
-RUN pip install -r requirements.txt
-
-# expose port 80
-
-EXPOSE 80
-
-# serve the app / run the app (keep it running)
-
-CMD ["python","run.py"]
+# Specify the command to run your application
+CMD ["python", "app.py"]
 
