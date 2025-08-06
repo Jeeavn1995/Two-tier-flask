@@ -22,7 +22,7 @@ services:
 
 
   flaskapp:
-      image: trainwithshubham/two-tier-flask-app:latest
+      image: jeevan19/two-tier-flask-app:latest
       container_name: flaskapp
       environment:
         MYSQL_HOST: mysql
